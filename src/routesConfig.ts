@@ -8,6 +8,10 @@ const config = {
     path: "/",
     name: "Home",
   },
+  createUser: {
+    path: "/create-user",
+    name: "Creat User",
+  },
 };
 
 type routesType = typeof config;

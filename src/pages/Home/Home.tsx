@@ -1,22 +1,28 @@
-import logo from '../../logo.svg';
+import { useEffect, useState } from "react";
+import { User, fetchUsers } from "../../api/user";
+import { UserForm } from "../../components/UserForm";
+import { UserTable } from "../../components/UserTable";
 
 export const Home = () => {
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    const init = async () => {
+      const usersResponse = await fetchUsers();
+      usersResponse.sort((a, b) => (a.name > b.name ? 1 : -1));
+      setUsers(usersResponse);
+    };
+    init();
+  }, []);
+
+  const handleSubmit = (newUser: User) => {
+    setUsers([...users, newUser]);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <UserTable users={users} />
+      <UserForm onSubmit={handleSubmit} />
     </div>
   );
 };
